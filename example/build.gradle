@@ -1,24 +1,35 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "com.myriadmobile.push.example"
         minSdkVersion 15
-        targetSdkVersion 20
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        versionName project.VERSION_NAME
+        versionCode Integer.parseInt(project.VERSION_CODE)
     }
+
+    signingConfigs { release }
+
     buildTypes {
         release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
 
 dependencies {
     compile project(':library')
+}
+
+if (project.hasProperty("shoveStoreFile") && project.hasProperty("shoveStorePassword") && project.hasProperty("shoveKeyAlias") && project.hasProperty("shoveKeyPassword")) {
+    android.signingConfigs.release.storeFile = file(project.shoveStoreFile)
+    android.signingConfigs.release.storePassword = project.shoveStorePassword
+    android.signingConfigs.release.keyAlias = project.shoveKeyAlias
+    android.signingConfigs.release.keyPassword = project.shoveKeyPassword
+} else {
+    logger.warn("WARNING: Invalid release signingConfig properties, signing with debug key.")
+    android.buildTypes.release.signingConfig = android.buildTypes.debug.signingConfig
 }

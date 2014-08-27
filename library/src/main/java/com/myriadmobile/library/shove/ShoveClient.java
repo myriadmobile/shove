@@ -1,4 +1,4 @@
-package com.myriadmobile.push;
+package com.myriadmobile.library.shove;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +10,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-public enum PushClient {
+public enum ShoveClient {
 
     /**
      * The singleton instance
@@ -20,7 +20,7 @@ public enum PushClient {
     /**
      * The logging tag
      */
-    private static final String TAG = PushClient.class.getSimpleName();
+    private static final String TAG = ShoveClient.class.getSimpleName();
 
     /**
      * The registration id shared preferences key
@@ -62,28 +62,10 @@ public enum PushClient {
      */
     private InitializeCallback mInitializeCallback;
 
-    /**
-     * The default push notification callback activity
-     */
-    private Class<? extends Activity> mDefaultActivity;
 
-    /**
-     * The default push notification callback icon
-     */
-    private int mDefaultIcon;
+    private ShoveDelegate mShoveDelegate;
 
-    /**
-     * The default extra key for the notification title
-     */
-    private String mDefaultTitleKey = "title";
-
-    /**
-     * The default extra key for the notification message
-     */
-    private String mDefaultMessageKey = "message";
-
-
-    private PushClient() {
+    private ShoveClient() {
     }
 
     /**
@@ -93,7 +75,17 @@ public enum PushClient {
      * @param gcmId   the Google Cloud Messaging application id
      */
     public static void initialize(Context context, String gcmId) {
-        initialize(context, gcmId, null);
+        initialize(context, gcmId, null, null);
+    }
+
+    /**
+     * Initializes the push client
+     *
+     * @param context the application context
+     * @param gcmId   the Google Cloud Messaging application id
+     */
+    public static void initialize(Context context, String gcmId, ShoveDelegate delegate) {
+        initialize(context, gcmId, null, delegate);
     }
 
     /**
@@ -104,44 +96,25 @@ public enum PushClient {
      * @param callback the callback to be invoked when initialization is complete
      */
     public static synchronized void initialize(Context context, String gcmId, InitializeCallback callback) {
+        initialize(context, gcmId, callback, null);
+    }
+
+    /**
+     * Initializes the push client
+     *
+     * @param context  the application context
+     * @param gcmId    the Google Cloud Messaging application id
+     * @param callback the callback to be invoked when initialization is complete
+     */
+    public static synchronized void initialize(Context context, String gcmId, InitializeCallback callback, ShoveDelegate delegate) {
         if (INSTANCE.mContext != null) {
-            throw new RuntimeException(TAG + " already initialized");
+            throw new RuntimeException(new ShoveException(TAG + " already initialized"));
         }
         INSTANCE.mContext = context.getApplicationContext();
         INSTANCE.mGcmId = gcmId;
         INSTANCE.mInitializeCallback = callback;
+        INSTANCE.mShoveDelegate = delegate;
         INSTANCE.initializeInBackground();
-    }
-
-    /**
-     * Sets the activity that is opened by default when a push notification is clicked
-     *
-     * @param cls The class of the activity
-     */
-    public static synchronized void setDefaultPushCallback(Class<? extends Activity> cls) {
-        setDefaultPushCallback(cls, 0);
-    }
-
-    /**
-     * Sets the activity that is opened by default when a push notification is clicked
-     *
-     * @param cls   The class of the activity
-     * @param mIcon The icon's resource id
-     */
-    public static synchronized void setDefaultPushCallback(Class<? extends Activity> cls, int mIcon) {
-        INSTANCE.mDefaultActivity = cls;
-        INSTANCE.mDefaultIcon = mIcon;
-    }
-
-    /**
-     * Sets the default bundle extra key for notification title and message
-     *
-     * @param titleKey   the bundle extra title key
-     * @param messageKey the bundle extra message key
-     */
-    public static synchronized void setDefaultKeys(String titleKey, String messageKey) {
-        INSTANCE.mDefaultTitleKey = titleKey;
-        INSTANCE.mDefaultMessageKey = messageKey;
     }
 
     /**
@@ -167,31 +140,13 @@ public enum PushClient {
     }
 
     /**
-     * @return the default activity or null
+     * @return The shove delegate
      */
-    public Class<? extends Activity> getDefaultActivity() {
-        return mDefaultActivity;
-    }
-
-    /**
-     * @return the default notification icon or 0
-     */
-    public int getDefaultIcon() {
-        return mDefaultIcon;
-    }
-
-    /**
-     * @return the default bundle extra title key
-     */
-    public String getDefaultTitleKey() {
-        return mDefaultTitleKey;
-    }
-
-    /**
-     * @return the default bundle extra message key
-     */
-    public String getDefaultMessageKey() {
-        return mDefaultMessageKey;
+    protected ShoveDelegate getDelegate() {
+        if (mShoveDelegate == null) {
+            return SimpleNotificationDelegate.INSTANCE;
+        }
+        return mShoveDelegate;
     }
 
     /**
@@ -216,8 +171,8 @@ public enum PushClient {
                         throw new PlayServicesNotFoundException();
                     }
                 } catch (Exception e) {
-                    if (!(e instanceof PushException)) {
-                        e = new PushException(e);
+                    if (!(e instanceof ShoveException)) {
+                        e = new ShoveException(e);
                     }
                     onError(e);
                 } finally {

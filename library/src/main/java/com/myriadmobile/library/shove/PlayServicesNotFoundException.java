@@ -1,6 +1,6 @@
-package com.myriadmobile.push;
+package com.myriadmobile.library.shove;
 
-public class PlayServicesNotFoundException extends PushException {
+public class PlayServicesNotFoundException extends ShoveException {
 
     public PlayServicesNotFoundException() {
         super("No valid Google Play Services APK found.");
