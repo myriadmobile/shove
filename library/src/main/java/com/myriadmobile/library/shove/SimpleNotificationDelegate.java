@@ -12,12 +12,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-public enum SimpleNotificationDelegate implements ShoveDelegate {
-
-    /**
-     * The singleton instance
-     */
-    INSTANCE;
+public class SimpleNotificationDelegate implements ShoveDelegate {
 
     /**
      * The default push notification callback activity
@@ -44,8 +39,8 @@ public enum SimpleNotificationDelegate implements ShoveDelegate {
      *
      * @param activity The class of the activity
      */
-    public static void setDefaultActivity(Class<? extends Activity> activity) {
-        INSTANCE.mDefaultActivity = activity;
+    public void setDefaultActivity(Class<? extends Activity> activity) {
+        mDefaultActivity = activity;
     }
 
     /**
@@ -53,8 +48,8 @@ public enum SimpleNotificationDelegate implements ShoveDelegate {
      *
      * @param iconResId the icon's resource id
      */
-    public static void setDefaultIcon(int iconResId) {
-        INSTANCE.mDefaultIconResId = iconResId;
+    public void setDefaultIcon(int iconResId) {
+        mDefaultIconResId = iconResId;
     }
 
     /**
@@ -62,8 +57,8 @@ public enum SimpleNotificationDelegate implements ShoveDelegate {
      *
      * @param titleKey the bundle extra title key
      */
-    public static void setTitleKey(String titleKey) {
-        INSTANCE.mTitleKey = titleKey;
+    public void setTitleKey(String titleKey) {
+        mTitleKey = titleKey;
     }
 
     /**
@@ -71,8 +66,8 @@ public enum SimpleNotificationDelegate implements ShoveDelegate {
      *
      * @param messageKey the bundle extra title key
      */
-    public static void setMessageKey(String messageKey) {
-        INSTANCE.mMessageKey = messageKey;
+    public void setMessageKey(String messageKey) {
+        mMessageKey = messageKey;
     }
 
     /**

@@ -62,7 +62,9 @@ public enum ShoveClient {
      */
     private InitializeCallback mInitializeCallback;
 
-
+    /**
+     * The notification delegate
+     */
     private ShoveDelegate mShoveDelegate;
 
     private ShoveClient() {
@@ -70,6 +72,8 @@ public enum ShoveClient {
 
     /**
      * Initializes the push client
+     *
+     * @throws RuntimeException if already initialized
      *
      * @param context the application context
      * @param gcmId   the Google Cloud Messaging application id
@@ -81,6 +85,8 @@ public enum ShoveClient {
     /**
      * Initializes the push client
      *
+     * @throws RuntimeException if already initialized
+     *
      * @param context the application context
      * @param gcmId   the Google Cloud Messaging application id
      */
@@ -90,6 +96,8 @@ public enum ShoveClient {
 
     /**
      * Initializes the push client
+     *
+     * @throws RuntimeException if already initialized
      *
      * @param context  the application context
      * @param gcmId    the Google Cloud Messaging application id
@@ -101,6 +109,8 @@ public enum ShoveClient {
 
     /**
      * Initializes the push client
+     *
+     * @throws RuntimeException if already initialized
      *
      * @param context  the application context
      * @param gcmId    the Google Cloud Messaging application id
@@ -142,11 +152,11 @@ public enum ShoveClient {
     /**
      * @return The shove delegate
      */
-    protected ShoveDelegate getDelegate() {
-        if (mShoveDelegate == null) {
-            return SimpleNotificationDelegate.INSTANCE;
+    public static synchronized ShoveDelegate getDelegate() {
+        if (INSTANCE.mShoveDelegate == null) {
+            INSTANCE.mShoveDelegate = new SimpleNotificationDelegate();
         }
-        return mShoveDelegate;
+        return INSTANCE.mShoveDelegate;
     }
 
     /**
