@@ -106,6 +106,7 @@ public class SimpleNotificationDelegate implements ShoveDelegate {
         long when = System.currentTimeMillis();
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+                .setAutoCancel(true)
                 .setSmallIcon(getIcon(context))
                 .setContentTitle(title)
                 .setContentText(message)
