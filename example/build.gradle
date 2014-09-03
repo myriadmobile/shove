@@ -23,6 +23,8 @@ android {
 project.archivesBaseName = "shove-example-" + android.defaultConfig.versionName;
 
 dependencies {
+    compile 'com.google.android.gms:play-services:4.4.+'
+    compile 'com.android.support:support-v4:20.+'
     compile project(':library')
 }
 
