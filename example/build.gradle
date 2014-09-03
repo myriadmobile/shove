@@ -20,6 +20,8 @@ android {
     }
 }
 
+project.archivesBaseName = "shove-example-" + android.defaultConfig.versionName;
+
 dependencies {
     compile project(':library')
 }
