@@ -1,5 +1,4 @@
 ![Shove](https://github.com/myriadmobile/shove/raw/master/res/shove_banner.png)
-=====
 
 Introduction
 ------------
