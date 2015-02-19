@@ -113,7 +113,7 @@ Declare the custom permission in your Android Manifest file.
 <permission
 		android:name="${applicationId}.permission.C2D_MESSAGE"
 		android:protectionLevel="signature" />
-	<uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+<uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 ```
 
 Documentation
