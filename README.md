@@ -36,7 +36,7 @@ By default, a notification will be shown if the pushed data includes a `message`
 Optionally, you can also supply a `title`.
 
 ### Intents
-Sometimes simply displaying a drawer notification isn't enough. You might want to do 
+Sometimes simply displaying a drawer notification isn't enough. You might want to do
 something when it is clicked. Luckily, we thought of that too!
 
 There are two different ways to do such:
@@ -94,7 +94,7 @@ delegate.setDefaultIcon(R.drawable.ic_launcher);
 // the activity to open when the drawer notification is clicked, default: launch activity
 delegate.setDefaultActivity(CustomActivity.class);
 ```
- 
+
 Initialize with the delegate:
 ```java
 ShoveClient.initialize(this, "YOUR_GCM_APPLICATION_ID", delegate);
@@ -108,6 +108,13 @@ own delegate. Simply create a class that implements `com.myriadmobile.library.sh
 
 Usage
 -------
+Declare the custom permission in your Android Manifest file.
+```xml
+<permission
+		android:name="${applicationId}.permission.C2D_MESSAGE"
+		android:protectionLevel="signature" />
+<uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+```
 
 Documentation
 -------
