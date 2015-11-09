@@ -11,7 +11,7 @@ android {
 }
 
 dependencies {
-    provided 'com.google.android.gms:play-services:+'
+    provided 'com.google.android.gms:play-services-gcm:8.3.0+'
     provided 'com.android.support:support-v4:+'
 }
 
