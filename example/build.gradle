@@ -23,9 +23,12 @@ android {
 project.archivesBaseName = "shove-example-" + android.defaultConfig.versionName;
 
 dependencies {
-    compile 'com.google.android.gms:play-services:4.4.+'
+    // Dependencies required for Shove to function properly.
     compile 'com.android.support:support-v4:20.+'
-    compile project(':library')
+    compile 'com.google.android.gms:play-services-gcm:8.3.0+'
+
+    // Shove Library.
+    compile 'com.myriadmobile.library:shove:0.9.0'
 }
 
 if (project.hasProperty("shoveStoreFile") && project.hasProperty("shoveStorePassword") && project.hasProperty("shoveKeyAlias") && project.hasProperty("shoveKeyPassword")) {
