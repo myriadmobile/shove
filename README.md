@@ -121,6 +121,11 @@ Documentation
 
 Dependencies
 --------
+Include the libraries that power Shove
+```groovy
+compile 'com.android.support:support-v4:20.+'
+compile 'com.google.android.gms:play-services-gcm:8.3.0+'
+```
 Shove is available on Maven Central! Simply add the following line to your build.gradle.
 ```groovy
 compile 'com.myriadmobile.library:shove:0.9.0'
