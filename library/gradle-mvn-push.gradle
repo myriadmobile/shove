@@ -39,6 +39,19 @@ def getRepositoryPassword() {
     return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
 
+boolean validProperty(propertyName) {
+    try { project.property(propertyName) != null }
+    catch (ignored) { false }
+}
+
+// ensure signing configuration
+gradle.taskGraph.whenReady { taskGraph ->
+    if(isReleaseBuild() && taskGraph.hasTask("uploadArchives")) {
+        assert validProperty('signing.keyId'), 'signing.keyId property must be provided'
+        assert validProperty('signing.secretKeyRingFile'), 'signing.secretKeyRingFile property must be provided'
+    }
+}
+
 afterEvaluate { project ->
     uploadArchives {
         repositories {
@@ -80,6 +93,12 @@ afterEvaluate { project ->
                         developer {
                             id POM_DEVELOPER_ID
                             name POM_DEVELOPER_NAME
+                        }
+                        developer {
+                            name 'Chris Roemmich'
+                            email 'croemmich@myriadmobile.com'
+                            organization 'Myriad Mobile'
+                            organizationUrl 'https://myriadmobile.com'
                         }
                     }
                 }
