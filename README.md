@@ -128,7 +128,7 @@ compile 'com.google.android.gms:play-services-gcm:8.3.0+'
 ```
 Shove is available on Maven Central! Simply add the following line to your build.gradle.
 ```groovy
-compile 'com.myriadmobile.library:shove:0.9.0'
+compile 'com.myriadmobile.library:shove:1.0.1'
 ```
 
 Roadmap
